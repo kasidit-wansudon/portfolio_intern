@@ -81,7 +81,7 @@ if(isset($_POST['register'])){
     <div class="col-md-6 col-lg-5">
       <div class="card">
         <div class="card-header">
-          👤 สมัครสมาชิก
+        สมัครสมาชิก
         </div>
         <div class="card-body">
           <form method="post">
