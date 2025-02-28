@@ -30,6 +30,12 @@ if (isset($_POST['upload'])) {
       $msgType = "error";
       $message = "⚠️ มีไฟล์ชื่อนี้อยู่แล้ว ไม่สามารถอัพโหลดซ้ำได้!";
     } else {
+      if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+        error_log("Failed to move file from {$file['tmp_name']} to {$targetPath}");
+        error_log("Upload error code: " . $file['error']);
+        $msgType = "warning";
+        $message = "อัพโหลดไฟล์ไม่สำเร็จ ลองอีกครั้ง!";
+      }
       if (move_uploaded_file($file['tmp_name'], $targetPath)) {
         // บันทึกลงฐานข้อมูล
         $insertSQL = "INSERT INTO uploads (user_id, category_id, file_name, file_path) 

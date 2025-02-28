@@ -22,7 +22,8 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
+CREATE DATABASE `file_management`;
+USE `file_management`;
 --
 -- Table structure for table `categories`
 --
