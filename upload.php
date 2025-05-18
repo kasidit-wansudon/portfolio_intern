@@ -30,21 +30,19 @@ if (isset($_POST['upload'])) {
       $msgType = "error";
       $message = "⚠️ มีไฟล์ชื่อนี้อยู่แล้ว ไม่สามารถอัพโหลดซ้ำได้!";
     } else {
-      if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
-        error_log("Failed to move file from {$file['tmp_name']} to {$targetPath}");
-        error_log("Upload error code: " . $file['error']);
-        $msgType = "warning";
-        $message = "อัพโหลดไฟล์ไม่สำเร็จ ลองอีกครั้ง!";
-      }
       if (move_uploaded_file($file['tmp_name'], $targetPath)) {
         // บันทึกลงฐานข้อมูล
         $insertSQL = "INSERT INTO uploads (user_id, category_id, file_name, file_path) 
-                      VALUES ('$user_id', '$category_id', '$fileName', '$targetPath')";
-        mysqli_query($conn, $insertSQL);
-
-        $msgType = "success";
-        $message = "อัพโหลดไฟล์เรียบร้อย 🎉";
+                VALUES ('$user_id', '$category_id', '$fileName', '$targetPath')";
+        if (mysqli_query($conn, $insertSQL)) {
+          $msgType = "success";
+          $message = "อัพโหลดไฟล์เรียบร้อย 🎉";
+        } else {
+          $msgType = "error";
+          $message = "อัพโหลดไฟล์แล้ว แต่บันทึกฐานข้อมูลไม่สำเร็จ: " . mysqli_error($conn);
+        }
       } else {
+        error_log("Failed to move file from {$file['tmp_name']} to {$targetPath}");
         $msgType = "warning";
         $message = "อัพโหลดไฟล์ไม่สำเร็จ ลองอีกครั้ง!";
       }
@@ -54,11 +52,12 @@ if (isset($_POST['upload'])) {
 ?>
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
   <title>Upload File</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
-  
+
   <!-- SweetAlert2 -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -68,18 +67,21 @@ if (isset($_POST['upload'])) {
       background-color: #f7f7f7;
       font-family: "Prompt", sans-serif;
     }
+
     .upload-container {
       max-width: 500px;
       margin: 50px auto;
       background-color: #ffffff;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       padding: 2rem;
     }
+
     .btn-upload {
       background-color: #4caf50;
       border: none;
     }
+
     .btn-upload:hover {
       background-color: #43a047;
     }
@@ -119,10 +121,10 @@ if (isset($_POST['upload'])) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // SweetAlert2 แจ้งเตือน
-    document.addEventListener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", function() {
       let msgType = "<?php echo $msgType; ?>";
       let message = "<?php echo $message; ?>";
-      if(message !== "") {
+      if (message !== "") {
         Swal.fire({
           icon: msgType, // 'success', 'error', 'warning', 'info'
           title: message,
@@ -133,4 +135,5 @@ if (isset($_POST['upload'])) {
     });
   </script>
 </body>
+
 </html>

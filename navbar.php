@@ -4,7 +4,7 @@
 // ดึงชื่อผู้ใช้จาก session ถ้ามี
 $username = "";
 if (isset($_SESSION['user_id'])) {
-    $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
+  $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 }
 
 // ตรวจสอบหน้าปัจจุบัน
@@ -43,11 +43,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <li class="nav-item">
           <a class="nav-link px-3 <?php echo ($current_page == 'manage_admin.php') ? 'active' : ''; ?>" href="manage_admin.php">Manage Admin</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link px-3 <?php echo ($current_page == 'gen_qr.php') ? 'active' : ''; ?>" href="gen_qr.php">
+            สร้าง QR Code
+          </a>
+        </li>
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <li class="nav-item">
+            <a class="nav-link px-3 <?php echo ($current_page == 'user_history.php') ? 'active' : ''; ?>" href="user_history.php">
+              ประวัติการเข้าออกงาน
+            </a>
+          </li>
+        <?php endif; ?>
+
       </ul>
 
       <!-- Right menu: User info & ปุ่มพิเศษ -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <?php if(isset($_SESSION['user_id'])): ?>
+        <?php if (isset($_SESSION['user_id'])): ?>
           <li class="nav-item d-flex align-items-center me-3">
             <span class="user-greeting">
               สวัสดี, <?php echo htmlspecialchars($username); ?>
@@ -85,20 +98,25 @@ $current_page = basename($_SERVER['PHP_SELF']);
     background: linear-gradient(135deg, #0d6efd, #6610f2);
     transition: background 0.5s ease;
   }
+
   .nav-link {
     transition: color 0.3s ease;
     font-size: 1rem;
   }
+
   .nav-link:hover {
     color: #ffc107 !important;
   }
+
   .nav-btn {
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
+
   .nav-btn:hover {
     background-color: rgba(255, 255, 255, 0.2);
     transform: scale(1.05);
   }
+
   .user-greeting {
     color: #fff;
     font-size: 0.95rem;

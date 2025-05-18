@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2025 at 03:59 PM
+-- Generation Time: May 18, 2025 at 12:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -22,8 +22,30 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-CREATE DATABASE `file_management`;
-USE `file_management`;
+
+--
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `staff_id` int(11) DEFAULT NULL,
+  `type` enum('checkin','checkout') DEFAULT NULL,
+  `time` datetime DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `user_id`, `staff_id`, `type`, `time`, `code`) VALUES
+(1, 1, 2, 'checkin', '2025-05-18 12:02:15', '3678c668'),
+(2, 1, 2, 'checkout', '2025-05-18 12:04:25', '15d0ca34');
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `categories`
 --
@@ -32,6 +54,13 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `category_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `category_name`) VALUES
+(1, 'รูป');
 
 -- --------------------------------------------------------
 
@@ -47,6 +76,13 @@ CREATE TABLE `reports` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `reports`
+--
+
+INSERT INTO `reports` (`id`, `user_id`, `subject`, `details`, `created_at`) VALUES
+(1, 1, 'เมื่อ', 'นานา', '2025-05-18 08:45:56');
+
 -- --------------------------------------------------------
 
 --
@@ -59,6 +95,13 @@ CREATE TABLE `report_attachments` (
   `upload_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `report_attachments`
+--
+
+INSERT INTO `report_attachments` (`id`, `report_id`, `upload_id`, `created_at`) VALUES
+(1, 1, 2, '2025-05-18 08:45:56');
 
 -- --------------------------------------------------------
 
@@ -75,6 +118,14 @@ CREATE TABLE `uploads` (
   `uploaded_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `uploads`
+--
+
+INSERT INTO `uploads` (`id`, `user_id`, `category_id`, `file_name`, `file_path`, `uploaded_at`) VALUES
+(1, 1, 1, 'Update.exe', 'uploads/Update.exe', '2025-05-18 15:37:58'),
+(2, 1, 1, '4k-Sunset-Anime-Comet-Stars-Scenery-Digital-Art-scaled.jpg', 'uploads/4k-Sunset-Anime-Comet-Stars-Scenery-Digital-Art-scaled.jpg', '2025-05-18 15:38:44');
+
 -- --------------------------------------------------------
 
 --
@@ -89,8 +140,22 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
+(1, 'oak', 'kasidid.wan@gmail.com', '$2y$10$8v04B5wYKsDHMNoQ4vvDTO7.qJJlFfyqGOVwotc8AzI8bhWVDYQey'),
+(2, 'staff', 'staff@m', '$2y$10$8LYAXXvfyixxpLIRw6aFL.Wz8zeVQmT2lqzI3/utVN0wClMRzUT9e');
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `categories`
@@ -128,34 +193,40 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `report_attachments`
 --
 ALTER TABLE `report_attachments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `uploads`
 --
 ALTER TABLE `uploads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
